@@ -669,8 +669,8 @@ const doc = new Document({
         }),
         caption('Tabla 8. Diseño del Autoencoder'),
 
-        h2('4.4 Resultados de Modelado ML (Validation)'),
-        p('Los resultados de validación se generan al ejecutar el notebook 03_modeling.ipynb. La tabla comparativa completa se encuentra en reports/model_comparison_val.csv una vez ejecutado.'),
+        h2('4.4 Resultados de Modelado ML'),
+        p('El Random Forest fue el único clasificador ejecutable en el entorno local (Apple Silicon M1) debido a incompatibilidad de arquitectura ARM64/x86_64 con los Python workers de Spark para GBT OneVsRest. El RF con CrossValidator k=5 y pesos de clase obtuvo los siguientes resultados:'),
         spacer(60),
         imgPara('confusion_matrix_—_random_forest_val.png', 460, 320, 'Confusion matrix RF Val'),
         caption('Figura 7. Matriz de confusión — Random Forest (Validation)'),
@@ -684,16 +684,16 @@ const doc = new Document({
               headerCell('Recall Probe', 1404), headerCell('Recall R2L', 1404), headerCell('Recall U2R', 1404),
             ]}),
             new TableRow({ children: [
-              dataCell('Random Forest', 2340, GRAY),
-              dataCell('Ver CSV', 1404, '#EBF3FB', AlignmentType.CENTER),
-              dataCell('—', 1404, WHITE, AlignmentType.CENTER),
-              dataCell('—', 1404, WHITE, AlignmentType.CENTER),
-              dataCell('—', 1404, WHITE, AlignmentType.CENTER),
-              dataCell('—', 1404, WHITE, AlignmentType.CENTER),
+              dataCell('Random Forest (Val)', 2340, GRAY),
+              dataCell('0.796', 1404, '#EBF3FB', AlignmentType.CENTER),
+              dataCell('1.000', 1404, WHITE, AlignmentType.CENTER),
+              dataCell('0.994', 1404, WHITE, AlignmentType.CENTER),
+              dataCell('0.985', 1404, WHITE, AlignmentType.CENTER),
+              dataCell('0.167', 1404, '#FFF2CC', AlignmentType.CENTER),
             ]}),
             new TableRow({ children: [
-              dataCell('GBT One-vs-Rest', 2340, GRAY),
-              dataCell('Ver CSV', 1404, '#EBF3FB', AlignmentType.CENTER),
+              dataCell('Random Forest (Test)', 2340, GRAY),
+              dataCell('0.919', 1404, '#D5E8D4', AlignmentType.CENTER),
               dataCell('—', 1404, WHITE, AlignmentType.CENTER),
               dataCell('—', 1404, WHITE, AlignmentType.CENTER),
               dataCell('—', 1404, WHITE, AlignmentType.CENTER),
@@ -709,7 +709,7 @@ const doc = new Document({
             ]}),
           ],
         }),
-        caption('Tabla 9. Comparativa de modelos ML en Validation. El RF de Databricks es el baseline sin pesos de clase.'),
+        caption('Tabla 9. Resultados Random Forest. Val F1-macro bajo por U2R (solo 6 muestras). Test F1 sube a 0.919 por distribution shift de R2L. Databricks RF = baseline sin pesos de clase.'),
         pageBreak(),
 
         // ── 5. Agente RL ─────────────────────────────────────────────────────
@@ -822,18 +822,37 @@ const doc = new Document({
               headerCell('Política', 2340), headerCell('COT Total', 1755),
               headerCell('COT/alerta', 1755), headerCell('Recall', 1755), headerCell('Cumple ≥0.90', 1755),
             ]}),
-            ...['Escalar Todo', 'Threshold ≥0.85', 'GBT Argmax', 'Q-Learning'].map(p_ =>
-              new TableRow({ children: [
-                dataCell(p_, 2340, GRAY),
-                dataCell('—', 1755, WHITE, AlignmentType.CENTER),
-                dataCell('—', 1755, WHITE, AlignmentType.CENTER),
-                dataCell('—', 1755, WHITE, AlignmentType.CENTER),
-                dataCell('—', 1755, WHITE, AlignmentType.CENTER),
-              ]})
-            ),
+            new TableRow({ children: [
+              dataCell('Escalar Todo', 2340, GRAY),
+              dataCell('38,211', 1755, WHITE, AlignmentType.CENTER),
+              dataCell('2.069', 1755, WHITE, AlignmentType.CENTER),
+              dataCell('1.000', 1755, WHITE, AlignmentType.CENTER),
+              dataCell('✓', 1755, WHITE, AlignmentType.CENTER),
+            ]}),
+            new TableRow({ children: [
+              dataCell('Threshold ≥0.85', 2340, GRAY),
+              dataCell('1,724', 1755, WHITE, AlignmentType.CENTER),
+              dataCell('0.093', 1755, WHITE, AlignmentType.CENTER),
+              dataCell('0.956', 1755, WHITE, AlignmentType.CENTER),
+              dataCell('✓', 1755, WHITE, AlignmentType.CENTER),
+            ]}),
+            new TableRow({ children: [
+              dataCell('RF Argmax (sin RL)', 2340, GRAY),
+              dataCell('-737', 1755, '#D5E8D4', AlignmentType.CENTER),
+              dataCell('-0.040', 1755, '#D5E8D4', AlignmentType.CENTER),
+              dataCell('0.998', 1755, WHITE, AlignmentType.CENTER),
+              dataCell('✓', 1755, WHITE, AlignmentType.CENTER),
+            ]}),
+            new TableRow({ children: [
+              dataCell('Q-Learning', 2340, GRAY),
+              dataCell('4,792', 1755, '#EBF3FB', AlignmentType.CENTER),
+              dataCell('0.260', 1755, '#EBF3FB', AlignmentType.CENTER),
+              dataCell('0.986', 1755, WHITE, AlignmentType.CENTER),
+              dataCell('✓', 1755, WHITE, AlignmentType.CENTER),
+            ]}),
           ],
         }),
-        caption('Tabla 13. Resultados FINALES en Test — pendiente de ejecutar notebook 04'),
+        caption('Tabla 13. Resultados FINALES en Test. COT negativo = ahorro neto. Las 4 políticas cumplen Recall ≥ 0.90.'),
         pageBreak(),
 
         // ── 6. Deployment ────────────────────────────────────────────────────
@@ -903,9 +922,10 @@ const doc = new Document({
         numbered('Constraint duro de recall (≥0.90) que garantiza que el sistema no sacrifica seguridad por eficiencia operativa.'),
 
         h2('7.2 Lecciones Aprendidas'),
-        bullet('El distribution shift de R2L (0.79% → 10.75%) es un desafío real que los modelos deben manejar con generalización, no memorización.'),
-        bullet('Los pesos de clase son críticos: el baseline sin pesos (Databricks) obtuvo F1=0.70, significativamente inferior al pipeline con pesos.'),
-        bullet('La métrica COT es más representativa que la accuracy para problemas de seguridad donde el costo de los errores es asimétrico.'),
+        bullet('El distribution shift de R2L (0.79% → 10.75%) es intencional en NSL-KDD: el RF generaliza bien, subiendo de F1=0.796 en val a 0.919 en test gracias a más muestras R2L.'),
+        bullet('Los pesos de clase son críticos: el baseline sin pesos (Databricks RF) obtuvo F1=0.70, frente a 0.919 del pipeline con CrossValidator y pesos.'),
+        bullet('El agente Q-Learning con 15 épocas no superó al baseline RF Argmax (COT=-737 vs 4,792). Esto indica que cuando el clasificador base ya es muy preciso (99.5%), el RL necesita más épocas o ajuste de hiperparámetros de recompensa para encontrar una política superior.'),
+        bullet('La incompatibilidad de arquitectura ARM64/x86_64 en macOS M1 con PySpark Python workers impidió correr GBT OneVsRest — documentado como limitación del entorno local; en Databricks (x86_64) el GBT sí funciona correctamente.'),
 
         h2('7.3 Trabajo Futuro'),
         bullet('Extender el Autoencoder con un LSTM-Autoencoder para capturar patrones temporales en el tráfico de red'),
