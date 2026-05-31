@@ -1,0 +1,2 @@
+model,f1_macro,accuracy,weighted_recall,recall_Normal,recall_DoS,recall_Probe,recall_R2L,recall_U2R
+Random Forest,0.9185,0.9951,0.9951,0.9927,1.0,0.9935,0.975,0.7143
