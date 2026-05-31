@@ -1,0 +1,9 @@
+{
+  "alpha": 0.1,
+  "gamma": 0.9,
+  "epsilon": 0.9275689688183278,
+  "epsilon_end": 0.05,
+  "epsilon_decay": 0.995,
+  "n_states": 60,
+  "n_actions": 3
+}

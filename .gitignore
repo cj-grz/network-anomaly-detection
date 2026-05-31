@@ -42,6 +42,11 @@ spark-warehouse/
 notebooks/models/
 models/preprocessing_pipeline/
 
+# Node.js (generador del reporte Word)
+reports/node_modules/
+reports/package.json
+reports/package-lock.json
+
 # macOS
 .DS_Store
 .AppleDouble

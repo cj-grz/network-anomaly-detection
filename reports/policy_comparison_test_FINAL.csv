@@ -1,0 +1,5 @@
+policy,dataset,COT,COT_por_alerta,recall_sistema,precision,f1_binario,pct_IGNORAR,pct_MONITOREAR,pct_ESCALAR,recall_OK
+GBT Argmax,Test,-737.0,-0.0399,0.9979,0.9917,0.9948,0.5317,0.0,0.4683,True
+Threshold (p≥0.85),Test,1724.0,0.0934,0.9558,0.9998,0.9773,0.4547,0.1003,0.445,True
+Q-Learning,Test,4792.0,0.2595,0.9855,0.8915,0.9361,0.4807,0.0048,0.5145,True
+Escalar Todo,Test,38211.0,2.0692,1.0,0.4654,0.6352,0.0,0.0,1.0,True
