@@ -1,0 +1,72 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+.eggs/
+
+# Entornos virtuales
+.venv/
+venv/
+env/
+.env
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Datos crudos y grandes (no subir a GitHub)
+data/raw/
+data/processed/*.parquet
+
+# Modelos (binarios grandes — usar MLflow o DVC)
+models/random_forest/
+models/gbt/
+models/autoencoder/model.keras
+models/rl_agent/q_table.npy
+
+# Sí subir: metadata de modelos
+!models/autoencoder/meta.json
+!models/rl_agent/agent_meta.json
+
+# Spark
+derby.log
+metastore_db/
+spark-warehouse/
+
+# Pipeline model (binarios de PySpark — excluir del repo)
+notebooks/models/
+models/preprocessing_pipeline/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs
+*.log
+logs/
+
+# Secrets
+*.env
+.env.*
+configs/secrets.yaml
+
+# Reportes generados (opcional subir)
+# reports/*.png  # descomenta si no quieres subir imágenes
+
+# Archivos temporales
+tmp/
+temp/
+*.tmp

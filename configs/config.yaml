@@ -1,0 +1,56 @@
+project:
+  name: "Network Anomaly Detection"
+  version: "1.0"
+  seed: 42
+
+paths:
+  raw_data:       "data/raw"
+  processed_data: "data/processed"
+  models:         "models"
+  reports:        "reports"
+
+data:
+  dataset:        "NSL-KDD"
+  train_file:     "KDDTrain+.txt"
+  test_file:      "KDDTest+.txt"
+  train_size:     0.70
+  val_size:       0.15
+  test_size:      0.15
+
+spark:
+  app_name:       "NetworkAnomalyDetection"
+  master:         "local[*]"
+  driver_memory:  "4g"
+
+model:
+  random_forest:
+    num_trees:    100
+    max_depth:    10
+    seed:         42
+  gbt:
+    max_iter:     50
+    max_depth:    8
+    step_size:    0.1
+    seed:         42
+  autoencoder:
+    epochs:       50
+    batch_size:   256
+    learning_rate: 0.001
+    seed:         42
+
+rl_agent:
+  alpha:          0.1     # learning rate
+  gamma:          0.9     # discount factor
+  epsilon_start:  1.0     # exploration start
+  epsilon_end:    0.05    # exploration end
+  epsilon_decay:  0.995
+  window_size:    100     # MongoDB rolling window
+
+costs:
+  fn_attack:      15      # false negative (missed attack)
+  fn_dos:         20      # false negative (missed DoS — higher impact)
+  fp_normal:      2       # false positive (normal escalated)
+  escalation:     1       # cost per alert reviewed
+  tn_saving:      -1      # saving per correctly ignored normal
+
+recall_threshold: 0.90    # system recall constraint (hard)
