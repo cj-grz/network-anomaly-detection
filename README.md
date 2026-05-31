@@ -66,8 +66,8 @@ network-anomaly-detection/
 │   ├── autoencoder/             # Modelo Keras + threshold
 │   └── rl_agent/                # Tabla Q + metadata
 ├── notebooks/
-│   ├── 01_eda.ipynb             # ✅ Análisis exploratorio
-│   ├── 02_preprocessing.ipynb  # ✅ Pipeline anti-leakage
+│   ├── 01_eda.ipynb             #  Análisis exploratorio
+│   ├── 02_preprocessing.ipynb  #  Pipeline anti-leakage
 │   ├── 03_modeling.ipynb        # Entrenamiento RF, GBT, Autoencoder
 │   └── 04_rl_agent.ipynb        # Entrenamiento y evaluación del agente RL
 ├── reports/                     # Gráficas y CSVs de resultados
@@ -179,5 +179,5 @@ El pipeline también fue ejecutado en **Databricks Community Edition** con:
 
 ## Autor
 
-**Justin** | Senior Data Scientist — CERT-TLG-SDS  
+**Justin Valdez** | Senior Data Scientist — CERT-TLG-SDS  
 Mayo 2026
